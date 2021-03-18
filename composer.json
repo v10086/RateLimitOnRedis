@@ -1,0 +1,27 @@
+{
+  "name": "v10086/redis-ratelimit",
+  "type": "library",
+  "description": "基于redis的限流器",
+  "keywords": [
+    "php",
+    "phpredis",
+    "redis",
+    "ratelimit"
+  ],
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "v10086",
+      "email": "1146625863@qq.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "v10086\\": "src/"
+    }
+  },
+  "minimum-stability": "dev"
+}
