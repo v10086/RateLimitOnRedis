@@ -22,8 +22,6 @@ class RedisRateLimit {
                 self::$msg=[$policyKey=>$policyVal];
                 return false;
             }
-
-            
         }
         return  true;
     }
