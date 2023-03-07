@@ -17,10 +17,7 @@ composer require v10086/redis-ratelimit:v1.0
 使用示例
 --------------------------------------------------------------------------
 
-
 ```php
-
-
 namespace v10086;
 //访问频率限制  使用示例:
 // \library\RedisRateLimit::$redisHandler=已完成连接接的redis C 端;
@@ -36,21 +33,16 @@ class RedisRateLimit {
         $rateKeyPrefix='rateLimit:'.$limitKey.':';
         foreach ($policy as $policyKey=>$policyVal) {
             $rateKey=$rateKeyPrefix.$policyKey;
-            $fsn= self::$redisHandler->INCR($rateKey,1);
-            if ($fsn>$policyVal) {
+            $count= self::$redisHandler->INCR($rateKey,1);
+            if($count==1){
+               self::$redisHandler->EXPIRE($rateKey,$policyKey);
+            }
+            if ($count>$policyVal) {
                 self::$msg=[$policyKey=>$policyVal];
                 return false;
             }
-            if(self::$redisHandler->TTL($rateKey)<0){
-               self::$redisHandler->EXPIRE($rateKey,$policyKey);
-            }
-            
         }
         return  true;
     }
 }
-
-
-
-
 ```
