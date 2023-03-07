@@ -14,14 +14,15 @@ class RedisRateLimit {
         $rateKeyPrefix='rateLimit:'.$limitKey.':';
         foreach ($policy as $policyKey=>$policyVal) {
             $rateKey=$rateKeyPrefix.$policyKey;
-            $fsn= self::$redisHandler->INCR($rateKey,1);
-            if ($fsn>$policyVal) {
+            $count= self::$redisHandler->INCR($rateKey,1);
+            if($count==1){
+               self::$redisHandler->EXPIRE($rateKey,$policyKey);
+            }
+            if ($count>$policyVal) {
                 self::$msg=[$policyKey=>$policyVal];
                 return false;
             }
-            if(self::$redisHandler->TTL($rateKey)<0){
-               self::$redisHandler->EXPIRE($rateKey,$policyKey);
-            }
+
             
         }
         return  true;
